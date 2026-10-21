@@ -118,7 +118,3 @@ If your server is configured differently, adjust the context path accordingly.
 3. The data is inserted into the `students` table.
 4. User is redirected to the list page.
 5. Student records may be edited or deleted from the list.
-
-## Notes
-
-This project is a basic CRUD example intended for learning Java web development with servlets and JSP. It is not production-hardened and does not include advanced validation, authentication, or security features.
