@@ -16,6 +16,13 @@ h2 {
     text-align: center;
 }
 
+.error {
+    padding: 10px;
+    color: #8a1c1c;
+    background-color: #fde8e8;
+    border: 1px solid #f5b5b5;
+}
+
 label {
     display: block;
     margin-bottom: 5px;

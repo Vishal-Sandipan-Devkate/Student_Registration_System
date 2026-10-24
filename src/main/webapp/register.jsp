@@ -21,6 +21,10 @@
 
         <h2>Student Registration</h2>
 
+        <c:if test="${not empty errorMessage}">
+            <p class="error" role="alert"><c:out value="${errorMessage}" /></p>
+        </c:if>
+
         <form action="Register" method="post">
 
             <label for="name">Name:</label>
@@ -28,7 +32,9 @@
             <input type="text"
                    id="name"
                    name="name"
+                   value="<c:out value='${name}' />"
                    placeholder="Enter your name"
+                   maxlength="100"
                    required>
 
             <br><br>
@@ -38,7 +44,9 @@
             <input type="email"
                    id="email"
                    name="email"
+                   value="<c:out value='${email}' />"
                    placeholder="Enter your email"
+                   maxlength="150"
                    required>
 
             <br><br>
@@ -48,7 +56,9 @@
             <input type="text"
                    id="course"
                    name="course"
+                   value="<c:out value='${course}' />"
                    placeholder="Enter your course"
+                   maxlength="100"
                    required>
 
             <br><br>

@@ -2,6 +2,9 @@
          contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c"
+           uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -69,6 +72,10 @@
 
     <h2>Edit Student</h2>
 
+    <c:if test="${not empty errorMessage}">
+        <p class="error" role="alert"><c:out value="${errorMessage}" /></p>
+    </c:if>
+
     <form action="update" method="post">
 
         <input type="hidden"
@@ -79,7 +86,8 @@
 
         <input type="text"
                name="name"
-               value="${student.name}"
+               value="<c:out value='${student.name}' />"
+               maxlength="100"
                required>
 
 
@@ -87,7 +95,8 @@
 
         <input type="email"
                name="email"
-               value="${student.email}"
+               value="<c:out value='${student.email}' />"
+               maxlength="150"
                required>
 
 
@@ -95,7 +104,8 @@
 
         <input type="text"
                name="course"
-               value="${student.course}"
+               value="<c:out value='${student.course}' />"
+               maxlength="100"
                required>
 
 

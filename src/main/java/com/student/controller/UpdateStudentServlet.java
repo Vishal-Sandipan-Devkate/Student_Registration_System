@@ -2,6 +2,7 @@ package com.student.controller;
 
 import com.student.dao.StudentDAO;
 import com.student.model.Student;
+import com.student.validation.StudentValidator;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,9 +20,7 @@ public class UpdateStudentServlet extends HttpServlet {
                           HttpServletResponse response)
             throws ServletException, IOException {
 
-        int id = Integer.parseInt(
-                request.getParameter("id")
-        );
+        String idParameter = request.getParameter("id");
 
         String name =
                 request.getParameter("name");
@@ -32,12 +31,31 @@ public class UpdateStudentServlet extends HttpServlet {
         String course =
                 request.getParameter("course");
 
+        int id;
+        try {
+            id = Integer.parseInt(idParameter);
+        } catch (NumberFormatException exception) {
+            response.sendRedirect("students");
+            return;
+        }
+
+        String validationError =
+                StudentValidator.validate(name, email, course);
+
         Student student = new Student(
                 id,
-                name,
-                email,
-                course
+                name == null ? null : name.trim(),
+                email == null ? null : email.trim(),
+                course == null ? null : course.trim()
         );
+
+        if (validationError != null) {
+            request.setAttribute("errorMessage", validationError);
+            request.setAttribute("student", student);
+            request.getRequestDispatcher("edit.jsp")
+                    .forward(request, response);
+            return;
+        }
 
         StudentDAO studentDAO =
                 new StudentDAO();

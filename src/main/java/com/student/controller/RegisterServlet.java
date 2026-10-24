@@ -1,6 +1,7 @@
 package com.student.controller;
 
 import com.student.dao.DBConnection;
+import com.student.validation.StudentValidator;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,6 +26,23 @@ public class RegisterServlet extends HttpServlet {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String course = request.getParameter("course");
+
+        String validationError =
+            StudentValidator.validate(name, email, course);
+
+        if (validationError != null) {
+            request.setAttribute("errorMessage", validationError);
+            request.setAttribute("name", name);
+            request.setAttribute("email", email);
+            request.setAttribute("course", course);
+            request.getRequestDispatcher("register.jsp")
+                .forward(request, response);
+            return;
+        }
+
+        name = name.trim();
+        email = email.trim();
+        course = course.trim();
 
         String sql = """
                 INSERT INTO students (name, email, course)
@@ -56,15 +74,13 @@ public class RegisterServlet extends HttpServlet {
 
             e.printStackTrace();
 
-            response.setContentType("text/html");
-
-            response.getWriter().println(
-                    "<h2>Database Error</h2>"
-            );
-
-            response.getWriter().println(
-                    "<p>" + e.getMessage() + "</p>"
-            );
+                request.setAttribute("errorMessage",
+                    "Unable to register the student. The email may already be registered.");
+                request.setAttribute("name", name);
+                request.setAttribute("email", email);
+                request.setAttribute("course", course);
+                request.getRequestDispatcher("register.jsp")
+                    .forward(request, response);
         }
     }
 }
